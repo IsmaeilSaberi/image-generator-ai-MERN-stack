@@ -74,6 +74,11 @@ const Home = () => {
       <Wrapper>
         <CardWrapper>
           <ImageCard />
+          <ImageCard />
+          <ImageCard />
+          <ImageCard />
+          <ImageCard />
+          <ImageCard />
         </CardWrapper>
       </Wrapper>
     </Container>
