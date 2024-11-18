@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 
-dotenv.config;
+dotenv.config();
 
 const app = express();
 app.use(cors());
@@ -22,12 +22,26 @@ app.get("/", async (req, res) => {
   res.status(200).json({ message: "Hello AI saas developers!" });
 });
 
+// function to connect to mongodb
+const connetToMongoDB = async () => {
+  mongoose.set("strictQuery", true);
+  mongoose
+    .connect(process.env.MONGODB_URL)
+    .then(() => console.log("MongoDB connected!"))
+    .catch((err) => {
+      console.error("Failed to connect to DB!");
+      console.log(err);
+    });
+};
+
 // function to start the server
 const startServer = async () => {
   try {
+    connetToMongoDB();
     app.listen(8080, () => console.log("Server is running on port 8080"));
   } catch (error) {
     console.log(error);
+    c;
   }
 };
 
