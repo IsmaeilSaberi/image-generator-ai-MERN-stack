@@ -70,7 +70,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [filteredPosts, setFilteredPost] = useState([]);
 
   // const item = {
   //   photo:
@@ -83,9 +83,9 @@ const Home = () => {
     setLoading(true);
     await GetPosts()
       .then((res) => {
-        setLoading(false);
         setPosts(res?.data?.data);
-        setFilteredPosts(res?.data?.data);
+        setFilteredPost(res?.data?.data);
+        setLoading(false);
       })
       .catch((error) => {
         setError(error?.response?.data?.message);
@@ -97,13 +97,34 @@ const Home = () => {
     getPosts();
   }, []);
 
+  // Search
+  useEffect(() => {
+    if (!search) {
+      setFilteredPost(posts);
+    }
+    const SearchFilteredPosts = posts.filter((post) => {
+      const promptMatch = post?.prompt
+        ?.toLowerCase()
+        .includes(search.toString().toLowerCase());
+      const authorMatch = post?.author
+        ?.toLowerCase()
+        .includes(search.toString().toLocaleLowerCase());
+
+      return promptMatch || authorMatch;
+    });
+
+    if (search) {
+      setFilteredPost(SearchFilteredPosts);
+    }
+  }, [posts, search]);
+
   return (
     <Container>
       <HeadLine>
         Explore popular posts in the Community
         <Span>⦿ Generated with AI ⦿</Span>
       </HeadLine>
-      <SearchBar />
+      <SearchBar search={search} setSearch={setSearch} />
       <Wrapper>
         {error && <div style={{ color: "red" }}>{error}</div>}
         {loading ? (
