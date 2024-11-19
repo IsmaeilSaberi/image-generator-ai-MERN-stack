@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { AutoAwesome, CreateRounded } from "@mui/icons-material";
 import TextInput from "../input/TextInput";
 import Button from "../buttons/button";
-// import { CreatePost, GenerateImageFromPrompt } from "../../api";
+import { CreatePost, GenerateAIImage } from "../../api";
 
 const Form = styled.div`
   flex: 1;
@@ -62,31 +62,31 @@ const GenerateImage = ({
   const generateImage = async () => {
     setGenerateImageLoading(true);
     setError("");
-    // await GenerateImageFromPrompt({ prompt: post.prompt })
-    //   .then((res) => {
-    //     setPost({
-    //       ...post,
-    //       photo: `data:image/jpeg;base64,${res?.data?.photo}`,
-    //     });
-    //     setGenerateImageLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     setError(error?.response?.data?.message);
-    //     setGenerateImageLoading(false);
-    //   });
+    await GenerateAIImage({ prompt: post.prompt })
+      .then((res) => {
+        setPost({
+          ...post,
+          photo: `data:image/jpeg;base64,${res?.data?.photo}`,
+        });
+        setGenerateImageLoading(false);
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.message);
+        setGenerateImageLoading(false);
+      });
   };
   const createPost = async () => {
     setcreatePostLoading(true);
     setError("");
-    // await CreatePost(post)
-    //   .then((res) => {
-    //     navigate("/");
-    //     setcreatePostLoading(false);
-    //   })
-    //   .catch((error) => {
-    //     setError(error?.response?.data?.message);
-    //     setcreatePostLoading(false);
-    //   });
+    await CreatePost(post)
+      .then((res) => {
+        navigate("/");
+        setcreatePostLoading(false);
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.message);
+        setcreatePostLoading(false);
+      });
   };
 
   return (
