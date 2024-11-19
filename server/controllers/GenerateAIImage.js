@@ -1,24 +1,25 @@
 import Post from "../models/Post.js";
 import * as dotenv from "dotenv";
-import OpenAI from "openai";
+import { Configuration, OpenAIApi } from "openai";
+import { createError } from "../error.js";
 
 dotenv.config();
 
 // Setup openAI api key
-const openai = new OpenAI({
+const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+const openai = new OpenAIApi(configuration);
 
 // Controller to generate Image
 export const generateImage = async (req, res, next) => {
   try {
     const { prompt } = req.body;
-    const response = await openai.images.generate({
-      model: "dall-e-3",
+    const response = await openai.createImage({
       prompt,
       n: 1,
       size: "1024x1024",
-      response_format: "b64json",
+      response_format: "b64_json",
     });
     const generatedImage = response.data.data[0].b64_json;
     return res.status(200).json({ photo: generatedImage });

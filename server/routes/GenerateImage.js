@@ -3,6 +3,6 @@ import { generateImage } from "../controllers/GenerateAIImage.js";
 
 const router = express.Router();
 
-router.get("/", generateImage);
+router.post("/", generateImage);
 
 export default router;
